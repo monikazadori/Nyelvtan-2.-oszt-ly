@@ -317,6 +317,43 @@ export const DiagnosticReportView: React.FC<DiagnosticReportViewProps> = ({
       ) : (
         /* CLASSROOM VIEW (Osztály riport tanároknak és diákoknak) */
         <div className="space-y-6">
+          {/* Class Switcher Selector for Teacher */}
+          <div className="bg-white p-4 rounded-3xl border border-indigo-200 shadow-xs flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🏫</span>
+              <div>
+                <h4 className="text-xs font-black text-slate-800 uppercase tracking-wider">
+                  Kiválasztott osztály felmérése:
+                </h4>
+                <p className="text-xs text-slate-500 font-medium">
+                  Válassz évfolyamot a 2. osztályos év végi vagy 3. osztályos év eleji összefoglaláshoz
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-500">Osztály:</span>
+              <select
+                value={selectedClass}
+                onChange={(e) => setSelectedClass(e.target.value)}
+                className="px-3 py-1.5 rounded-xl border border-indigo-300 font-black text-xs text-indigo-900 bg-indigo-50/50 focus:outline-hidden focus:ring-2 focus:ring-indigo-400"
+              >
+                <optgroup label="2. osztály (év végi ismétlés)">
+                  <option value="2.a">2.a osztály</option>
+                  <option value="2.b">2.b osztály</option>
+                  <option value="2.c">2.c osztály</option>
+                  <option value="2.d">2.d osztály</option>
+                </optgroup>
+                <optgroup label="3. osztály (év eleji ismétlés & diagnosztika)">
+                  <option value="3.a">3.a osztály</option>
+                  <option value="3.b">3.b osztály</option>
+                  <option value="3.c">3.c osztály</option>
+                  <option value="3.d">3.d osztály</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
           {/* Class summary cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-xs">

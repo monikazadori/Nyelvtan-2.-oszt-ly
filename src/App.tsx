@@ -180,8 +180,9 @@ export default function App() {
                         Szervusz, {currentProfile.name}!
                       </h2>
                       <p className="text-xs sm:text-sm text-orange-100 font-medium max-w-xl mt-0.5">
-                        Készen állsz a 2. osztályos nyelvtan és helyesírás játékos ismétlésére?
-                        Gyűjts csillagokat és fedezd fel az erősségeidet!
+                        {currentProfile.className.startsWith('3')
+                          ? '3. osztályos év eleji felkészülés: ismételd át játékosan az alapokat, hogy magabiztosan indítsd az új tanévet!'
+                          : 'Készen állsz a 2. osztályos nyelvtan és helyesírás játékos ismétlésére? Gyűjts csillagokat és fedezd fel az erősségeidet!'}
                       </p>
                     </div>
                   </div>
@@ -251,10 +252,14 @@ export default function App() {
                 <span className="text-3xl">💡</span>
                 <div>
                   <h3 className="text-sm font-black text-amber-950">
-                    Süni Samu és Róka Rudi tanácsa a másodikosoknak:
+                    {currentProfile?.className.startsWith('3')
+                      ? 'Süni Samu és Bagoly Berci tanácsa a harmadikosoknak év elejére:'
+                      : 'Süni Samu és Róka Rudi tanácsa a másodikosoknak:'}
                   </h3>
                   <p className="text-xs text-amber-900 font-semibold leading-relaxed">
-                    „A szavak végén az -ó és az -ő mindig hosszú! Ha pedig nem vagy biztos egy szóban, próbáld meg szótagolni, vagy gondolj a szótőre!”
+                    {currentProfile?.className.startsWith('3')
+                      ? '„A 3. osztályban a szófajok és a mondatok világába lépünk. De a biztos alap a szóvégi ó/ő/ú/ű, a j és ly, valamint a kettőzött mássalhangzók ismerete! Gyakorolj velünk bátran!”'
+                      : '„A szavak végén az -ó és az -ő mindig hosszú! Ha pedig nem vagy biztos egy szóban, próbáld meg szótagolni, vagy gondolj a szótőre!”'}
                   </p>
                 </div>
               </div>

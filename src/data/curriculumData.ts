@@ -1,5 +1,15 @@
 import { TopicId, TopicMeta, ExerciseItem, Badge } from '../types';
 
+export const GRADE_LEVELS = [
+  { id: '2', label: '2. osztály (Év végi ismétlés)', badge: '2. osztály' },
+  { id: '3', label: '3. osztály (Év eleji diagnosztika & ismétlés)', badge: '3. osztály' },
+] as const;
+
+export const DEFAULT_CLASSES = [
+  '2.a', '2.b', '2.c', '2.d',
+  '3.a', '3.b', '3.c', '3.d'
+];
+
 export const AVATARS = [
   { id: 'suni', name: 'Süni Samu', emoji: '🦔', desc: 'A megfontolt erdőjáró' },
   { id: 'bagoly', name: 'Bagoly Berci', emoji: '🦉', desc: 'A bölcs betűmester' },

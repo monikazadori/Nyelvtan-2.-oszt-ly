@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { X, UserPlus, Check, Sparkles, GraduationCap } from 'lucide-react';
+import { X, UserPlus, Check, Sparkles, GraduationCap, School } from 'lucide-react';
 import { StudentProfile } from '../types';
-import { AVATARS } from '../data/curriculumData';
+import { AVATARS, DEFAULT_CLASSES } from '../data/curriculumData';
 import { createProfile } from '../utils/storage';
 
 interface RegistrationModalProps {
@@ -74,12 +74,12 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
         <div className="p-6">
           {!isRegisteringNew ? (
             <div>
-              {/* Class Filter Bar */}
-              <div className="mb-4 bg-slate-50 p-3 rounded-2xl border border-slate-200">
-                <div className="flex items-center justify-between mb-2">
+              {/* Grade and Class Filter Bar */}
+              <div className="mb-4 bg-slate-50 p-3 rounded-2xl border border-slate-200 space-y-2.5">
+                <div className="flex items-center justify-between">
                   <span className="text-xs font-black text-slate-700 flex items-center gap-1.5">
                     <GraduationCap className="w-4 h-4 text-orange-500" />
-                    <span>Válassz osztályt:</span>
+                    <span>Válassz évfolyamot és osztályt:</span>
                   </span>
                   <span className="text-[11px] font-bold text-slate-500">
                     {selectedClassFilter === 'all' 
@@ -87,21 +87,62 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                       : `${selectedClassFilter} osztály (${filteredProfiles.length} fő)`}
                   </span>
                 </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {(['all', '2.a', '2.b', '2.c', '2.d'] as const).map((cls) => (
+
+                {/* 2. osztály gombok */}
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-amber-700 block mb-1">
+                    2. osztály (év végi ismétlés):
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
                     <button
-                      key={cls}
                       type="button"
-                      onClick={() => setSelectedClassFilter(cls)}
-                      className={`px-3 py-1 rounded-xl text-xs font-black transition-all ${
-                        selectedClassFilter === cls
-                          ? 'bg-orange-500 text-white shadow-xs scale-102'
-                          : 'bg-white text-slate-600 border border-slate-200 hover:border-orange-300'
+                      onClick={() => setSelectedClassFilter('all')}
+                      className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all ${
+                        selectedClassFilter === 'all'
+                          ? 'bg-slate-800 text-white shadow-xs'
+                          : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300'
                       }`}
                     >
-                      {cls === 'all' ? 'Összes osztály' : `${cls} osztály`}
+                      Összes
                     </button>
-                  ))}
+                    {(['2.a', '2.b', '2.c', '2.d'] as const).map((cls) => (
+                      <button
+                        key={cls}
+                        type="button"
+                        onClick={() => setSelectedClassFilter(cls)}
+                        className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all ${
+                          selectedClassFilter === cls
+                            ? 'bg-orange-500 text-white shadow-xs scale-102'
+                            : 'bg-white text-slate-600 border border-slate-200 hover:border-orange-300'
+                        }`}
+                      >
+                        {cls}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. osztály gombok */}
+                <div>
+                  <span className="text-[10px] font-black uppercase tracking-wider text-indigo-700 block mb-1">
+                    3. osztály (év eleji ismétlés):
+                  </span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {(['3.a', '3.b', '3.c', '3.d'] as const).map((cls) => (
+                      <button
+                        key={cls}
+                        type="button"
+                        onClick={() => setSelectedClassFilter(cls)}
+                        className={`px-2.5 py-1 rounded-xl text-xs font-black transition-all ${
+                          selectedClassFilter === cls
+                            ? 'bg-indigo-600 text-white shadow-xs scale-102'
+                            : 'bg-white text-slate-600 border border-slate-200 hover:border-indigo-300'
+                        }`}
+                      >
+                        {cls}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -210,22 +251,35 @@ export const RegistrationModal: React.FC<RegistrationModalProps> = ({
                   <select
                     value={className}
                     onChange={(e) => setClassName(e.target.value)}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-orange-400 font-bold text-slate-800 bg-white"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:outline-hidden focus:ring-2 focus:ring-orange-400 font-bold text-slate-800 bg-white text-xs"
                   >
-                    <option value="2.a">2.a osztály</option>
-                    <option value="2.b">2.b osztály</option>
-                    <option value="2.c">2.c osztály</option>
-                    <option value="2.d">2.d osztály</option>
+                    <optgroup label="2. osztály (év végi ismétlés)">
+                      <option value="2.a">2.a osztály</option>
+                      <option value="2.b">2.b osztály</option>
+                      <option value="2.c">2.c osztály</option>
+                      <option value="2.d">2.d osztály</option>
+                    </optgroup>
+                    <optgroup label="3. osztály (év eleji felmérés & ismétlés)">
+                      <option value="3.a">3.a osztály</option>
+                      <option value="3.b">3.b osztály</option>
+                      <option value="3.c">3.c osztály</option>
+                      <option value="3.d">3.d osztály</option>
+                    </optgroup>
                   </select>
                 </div>
 
                 <div>
                   <label className="block text-xs font-bold text-slate-600 mb-1">
-                    Kezdő rang
+                    Célkitűzés & Évfolyam
                   </label>
-                  <div className="px-3 py-2.5 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold flex items-center gap-1">
-                    <GraduationCap className="w-4 h-4 text-orange-500" />
-                    <span>2. osztályos Kalandor</span>
+                  <div className="px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold flex flex-col justify-center">
+                    <span className="flex items-center gap-1 text-slate-900 font-black">
+                      <GraduationCap className="w-4 h-4 text-orange-500" />
+                      {className.startsWith('3') ? '3. évfolyam eleje' : '2. évfolyam vége'}
+                    </span>
+                    <span className="text-[10px] text-slate-500">
+                      {className.startsWith('3') ? 'Diagnosztika & Ismétlés' : 'Nyelvtan összefoglalás'}
+                    </span>
                   </div>
                 </div>
               </div>

@@ -47,12 +47,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               <h1 className="font-extrabold text-lg sm:text-xl text-slate-800 tracking-tight">
                 Nyelvtan Kalandor
               </h1>
-              <span className="bg-orange-100 text-orange-700 text-xs font-black px-2 py-0.5 rounded-full border border-orange-200">
-                2. osztály
+              <span className={`text-xs font-black px-2 py-0.5 rounded-full border ${
+                currentProfile?.className?.startsWith('3')
+                  ? 'bg-indigo-100 text-indigo-700 border-indigo-200'
+                  : 'bg-orange-100 text-orange-700 border-orange-200'
+              }`}>
+                {currentProfile?.className?.startsWith('3') ? '3. osztály (év eleji)' : '2. osztály'}
               </span>
             </div>
             <p className="text-xs text-slate-500 font-medium hidden sm:block">
-              NAT 2020 tananyag ismétlése játékosan
+              {currentProfile?.className?.startsWith('3')
+                ? 'Év eleji diagnosztikai ismétlés & felmérés'
+                : 'NAT 2020 tananyag ismétlése játékosan'}
             </p>
           </div>
         </div>

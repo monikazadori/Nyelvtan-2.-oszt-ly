@@ -1,6 +1,6 @@
 {
-  "name": "Nyelvtan Kalandor - 2. Osztályos Ismétlés",
-  "description": "Játékos nyelvtan és helyesírás ismétlő feladatgyűjtemény 2. osztályosok számára, tanulói regisztrációval, gamifikációval és diagnosztikai visszajelzéssel.",
+  "name": "Nyelvtan Kalandor - 2. és 3. Osztályos Nyelvtani Ismétlés",
+  "description": "Játékos nyelvtan és helyesírás ismétlő feladatgyűjtemény 2. osztály év végi összefoglalásához és 3. osztály év eleji diagnosztikai felméréséhez, tanulói regisztrációval és osztályriporttal.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
