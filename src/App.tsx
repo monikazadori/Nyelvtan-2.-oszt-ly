@@ -258,8 +258,8 @@ export default function App() {
                   </h3>
                   <p className="text-xs text-amber-900 font-semibold leading-relaxed">
                     {currentProfile?.className.startsWith('3')
-                      ? '„A 3. osztályban a szófajok és a mondatok világába lépünk. De a biztos alap a szóvégi ó/ő/ú/ű, a j és ly, valamint a kettőzött mássalhangzók ismerete! Gyakorolj velünk bátran!”'
-                      : '„A szavak végén az -ó és az -ő mindig hosszú! Ha pedig nem vagy biztos egy szóban, próbáld meg szótagolni, vagy gondolj a szótőre!”'}
+                      ? '„A 3. osztály év elején a biztos alapot a korábban tanult szabályok felidézése adja: a magánhangzók időtartama, a j és ly, valamint a kettőzött mássalhangzók. Gyakorolj velünk bátran!”'
+                      : '„Figyelj a szóvégi magánhangzók hosszúságára! Ha bizonytalan vagy, mondd ki lassan a szót, szótagold, és gondolj a tanult szabályokra!”'}
                   </p>
                 </div>
               </div>
@@ -282,8 +282,8 @@ export default function App() {
                   Válassz egy fejezetet és gyakorolj játékosan!
                 </p>
               </div>
-              <span className="text-xs font-black text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">
-                7 témakör • 25+ interaktív feladat
+              <span className="text-xs font-black text-slate-500 bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
+                {TOPICS.length} témakör • {EXERCISES.length}+ változatos feladat
               </span>
             </div>
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   ArrowLeft, 
@@ -15,6 +15,7 @@ import { ExerciseItem, StudentProfile, TopicId } from '../types';
 import { TOPICS, AVATARS, EXERCISES } from '../data/curriculumData';
 import { soundFx } from '../utils/audio';
 import { updateProfileAnswer } from '../utils/storage';
+import { shuffleArray, shuffleOptions } from '../utils/shuffle';
 
 interface ExercisePlayerProps {
   topicId: TopicId | null;
@@ -34,8 +35,33 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
   onOpenReport,
 }) => {
   const currentTopic = TOPICS.find((t) => t.id === topicId);
-  const exerciseList = customExerciseList || (topicId ? EXERCISES.filter((e) => e.topicId === topicId) : []);
 
+  // Helper to construct a fresh, randomized session
+  const prepareSession = () => {
+    let baseList: ExerciseItem[] = [];
+    if (customExerciseList && customExerciseList.length > 0) {
+      baseList = customExerciseList;
+    } else if (topicId) {
+      baseList = EXERCISES.filter((e) => e.topicId === topicId);
+    }
+
+    // 1. Shuffle exercises copy with Fisher-Yates
+    const shuffledList = shuffleArray(baseList);
+
+    // 2. Select 10 random unique exercises for the session (or all if targeted practice has <= 10)
+    const selectedForSession = customExerciseList ? shuffledList : shuffledList.slice(0, Math.min(10, shuffledList.length));
+
+    // 3. Shuffle options for each question once into state, preserving correctAnswer string
+    const preparedList = selectedForSession.map((ex) => ({
+      ...ex,
+      options: ex.options ? shuffleOptions(ex.options) : [],
+    }));
+
+    return preparedList;
+  };
+
+  // State holding the randomized exercises for this session
+  const [exerciseList, setExerciseList] = useState<ExerciseItem[]>(() => prepareSession());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -43,6 +69,32 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
   const [showHint, setShowHint] = useState(false);
   const [sessionScore, setSessionScore] = useState({ correct: 0, total: 0 });
   const [sessionFinished, setSessionFinished] = useState(false);
+
+  // If topicId or customExerciseList changes from outside, reset session
+  useEffect(() => {
+    const fresh = prepareSession();
+    setExerciseList(fresh);
+    setCurrentIndex(0);
+    setSelectedOption(null);
+    setHasSubmitted(false);
+    setIsCorrect(false);
+    setShowHint(false);
+    setSessionScore({ correct: 0, total: 0 });
+    setSessionFinished(false);
+  }, [topicId, customExerciseList]);
+
+  const handleRestartSession = () => {
+    // Generate an entirely new randomized order and new options shuffle
+    const fresh = prepareSession();
+    setExerciseList(fresh);
+    setCurrentIndex(0);
+    setSelectedOption(null);
+    setHasSubmitted(false);
+    setIsCorrect(false);
+    setShowHint(false);
+    setSessionScore({ correct: 0, total: 0 });
+    setSessionFinished(false);
+  };
 
   const currentExercise = exerciseList[currentIndex];
   const mascot = AVATARS.find((a) => a.id === profile.avatar) || AVATARS[0];
@@ -55,6 +107,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
   const handleSubmitAnswer = () => {
     if (!selectedOption || !currentExercise || hasSubmitted) return;
 
+    // Correctness is checked by string equality against the stable correctAnswer value
     const correct = selectedOption === currentExercise.correctAnswer;
     setHasSubmitted(true);
     setIsCorrect(correct);
@@ -122,10 +175,10 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
         <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xs">
           <span className="text-5xl">🎉</span>
           <h2 className="text-xl font-black text-slate-800 mt-3">
-            Nincs több megválaszolatlan feladat ebben a listában!
+            Nincs több feladat ebben a listában!
           </h2>
           <p className="text-slate-500 text-sm mt-1 mb-6">
-            Minden feladatot sikeresen teljesítettél, vagy már gyakoroltad őket.
+            Minden feladatot sikeresen teljesítettél, vagy üres a lista.
           </p>
           <button
             onClick={onClose}
@@ -155,7 +208,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
             {currentTopic ? currentTopic.title : 'Célzott Ismétlés'}
           </span>
           <span className="text-xs font-black text-orange-600">
-            {currentIndex + 1}. / {exerciseList.length} feladat
+            {currentIndex + 1} / {exerciseList.length}. feladat
           </span>
         </div>
 
@@ -237,7 +290,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
 
               return (
                 <button
-                  key={idx}
+                  key={`${currentExercise.id}_opt_${idx}`}
                   onClick={() => handleSelectOption(opt)}
                   disabled={hasSubmitted}
                   className={`w-full p-4 rounded-2xl border text-left text-sm sm:text-base transition-all flex items-center justify-between ${btnStyle}`}
@@ -349,24 +402,16 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
-              onClick={() => {
-                setCurrentIndex(0);
-                setSelectedOption(null);
-                setHasSubmitted(false);
-                setIsCorrect(false);
-                setShowHint(false);
-                setSessionScore({ correct: 0, total: 0 });
-                setSessionFinished(false);
-              }}
-              className="flex items-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-sm rounded-xl transition-all"
+              onClick={handleRestartSession}
+              className="flex items-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-sm rounded-xl transition-all cursor-pointer"
             >
               <RotateCcw className="w-4 h-4" />
-              <span>Újra játszom</span>
+              <span>Újra játszom (új sorrend)</span>
             </button>
 
             <button
               onClick={onOpenReport}
-              className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-xl shadow-md shadow-indigo-200 transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm rounded-xl shadow-md shadow-indigo-200 transition-all cursor-pointer"
             >
               <span>Visszajelzés és Erősségek</span>
               <ArrowRight className="w-4 h-4" />
@@ -374,7 +419,7 @@ export const ExercisePlayer: React.FC<ExercisePlayerProps> = ({
 
             <button
               onClick={onClose}
-              className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-sm rounded-xl shadow-md shadow-orange-200 transition-all"
+              className="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-sm rounded-xl shadow-md shadow-orange-200 transition-all cursor-pointer"
             >
               Vissza a Kalandtérképhez
             </button>

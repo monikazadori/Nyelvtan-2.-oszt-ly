@@ -32,10 +32,21 @@ export function generateStudentDiagnostic(profile: StudentProfile): Comprehensiv
     const pct = count > 0 ? Math.round((correct / count) * 100) : 0;
 
     let status: DiagnosticCategoryReport['status'] = 'not-started';
+    let diagnosticLevel: DiagnosticCategoryReport['diagnosticLevel'] = undefined;
     if (count > 0) {
-      if (pct >= 85) status = 'mastered';
-      else if (pct >= 60) status = 'developing';
-      else status = 'needs-practice';
+      if (pct >= 85) {
+        status = 'mastered';
+        diagnosticLevel = 'biztos'; // biztos tudás (85%+)
+      } else if (pct >= 70) {
+        status = 'developing';
+        diagnosticLevel = 'bizonytalan'; // kisebb bizonytalanság (70-84%)
+      } else if (pct >= 50) {
+        status = 'needs-practice';
+        diagnosticLevel = 'gyakorlas'; // gyakorlást igényel (50-69%)
+      } else {
+        status = 'needs-practice';
+        diagnosticLevel = 'fejlesztes'; // kiemelt fejlesztést igényel (<50%)
+      }
     }
 
     const strengths: string[] = [];
@@ -47,11 +58,11 @@ export function generateStudentDiagnostic(profile: StudentProfile): Comprehensiv
       case 'vowels':
         if (pct >= 80) {
           strengths.push('Biztosan felismered a rövid és hosszú magánhangzópárokat.');
-          strengths.push('Tudod, hogy a szavak végén az -ó és az -ő mindig hosszú.');
+          strengths.push('Tudod, hogy a szó végén az ó hosszú (kivétel: no, nono), és figyelsz a szóvégi ő, ú, ű helyesírására.');
         } else if (count > 0) {
-          weaknesses.push('A szóvégi -u és -ú kivételek még bizonytalanok.');
-          tips.push('Jegyezd meg a rövid -u végű szavakat: falu, kapu, bábu, anyu, apu, daru, hamu, lapu!');
-          tips.push('A szavak végén az -ó és az -ő mindig hosszú: olló, erdő, szőlő!');
+          weaknesses.push('A szóvégi magánhangzók (ó, ő, ú, ű) még gyakorlást igényelnek.');
+          tips.push('A szó végén az ó hosszú! Kivétel: no, nono.');
+          tips.push('A szóvégi ő, ú, ű írására külön figyelünk: megjegyezzük a rövid u és ü végű szavakat (pl. kapu, falu, daru, hamu, apu, anyu, eskü, menü).');
         }
         break;
 
@@ -126,6 +137,7 @@ export function generateStudentDiagnostic(profile: StudentProfile): Comprehensiv
       correctCount: correct,
       percentage: pct,
       status,
+      diagnosticLevel,
       strengths,
       weaknesses,
       tips,

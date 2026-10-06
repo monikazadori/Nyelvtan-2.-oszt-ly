@@ -281,21 +281,25 @@ export const DiagnosticReportView: React.FC<DiagnosticReportViewProps> = ({
                         <span className="text-sm font-black text-slate-800 block">
                           {cat.percentage}%
                         </span>
-                        <span className={`text-[10px] font-extrabold uppercase px-1.5 py-0.5 rounded ${
-                          cat.status === 'mastered'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : cat.status === 'developing'
-                            ? 'bg-amber-100 text-amber-800'
-                            : cat.status === 'needs-practice'
-                            ? 'bg-rose-100 text-rose-800'
+                        <span className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full inline-block ${
+                          cat.diagnosticLevel === 'biztos'
+                            ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                            : cat.diagnosticLevel === 'bizonytalan'
+                            ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                            : cat.diagnosticLevel === 'gyakorlas'
+                            ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                            : cat.diagnosticLevel === 'fejlesztes'
+                            ? 'bg-rose-100 text-rose-800 border border-rose-300'
                             : 'bg-slate-100 text-slate-500'
                         }`}>
-                          {cat.status === 'mastered'
-                            ? 'Mesteri'
-                            : cat.status === 'developing'
-                            ? 'Fejlődő'
-                            : cat.status === 'needs-practice'
-                            ? 'Gyakorlandó'
+                          {cat.diagnosticLevel === 'biztos'
+                            ? 'Biztos tudás'
+                            : cat.diagnosticLevel === 'bizonytalan'
+                            ? 'Kisebb bizonytalanság'
+                            : cat.diagnosticLevel === 'gyakorlas'
+                            ? 'Gyakorlást igényel'
+                            : cat.diagnosticLevel === 'fejlesztes'
+                            ? 'Kiemelt fejlesztést igényel'
                             : 'Még nincs adat'}
                         </span>
                       </div>
@@ -406,9 +410,28 @@ export const DiagnosticReportView: React.FC<DiagnosticReportViewProps> = ({
             <div className="space-y-4">
               {classDiag.topicAverages.map((t) => (
                 <div key={t.topicId} className="space-y-1">
-                  <div className="flex justify-between text-xs font-extrabold text-slate-700">
+                  <div className="flex justify-between items-center text-xs font-extrabold text-slate-700">
                     <span>{t.title}</span>
-                    <span>{t.averagePct}%</span>
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
+                        t.averagePct >= 85
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : t.averagePct >= 70
+                          ? 'bg-blue-100 text-blue-800'
+                          : t.averagePct >= 50
+                          ? 'bg-amber-100 text-amber-800'
+                          : 'bg-rose-100 text-rose-800'
+                      }`}>
+                        {t.averagePct >= 85
+                          ? 'Biztos tudás'
+                          : t.averagePct >= 70
+                          ? 'Kisebb bizonytalanság'
+                          : t.averagePct >= 50
+                          ? 'Gyakorlást igényel'
+                          : 'Kiemelt fejlesztést igényel'}
+                      </span>
+                      <span>{t.averagePct}%</span>
+                    </div>
                   </div>
                   <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
                     <div

@@ -87,6 +87,7 @@ export interface DiagnosticCategoryReport {
   correctCount: number;
   percentage: number;
   status: 'mastered' | 'developing' | 'needs-practice' | 'not-started';
+  diagnosticLevel?: 'biztos' | 'bizonytalan' | 'gyakorlas' | 'fejlesztes';
   strengths: string[];
   weaknesses: string[];
   tips: string[];

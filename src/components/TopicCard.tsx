@@ -59,12 +59,14 @@ export const TopicCard: React.FC<TopicCardProps> = ({ topic, profile, onSelectTo
         </p>
 
         {/* Rule Highlight Pill */}
-        <div className="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-3 mb-4 flex items-start gap-2">
+        <div className="bg-amber-50/80 border border-amber-200/90 rounded-2xl p-3 mb-4 flex items-start gap-2.5">
           <BookOpen className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-          <p className="text-[11px] text-amber-900 font-semibold leading-normal">
-            <span className="font-extrabold text-amber-950">Aranyszabály: </span>
-            {topic.ruleSummary}
-          </p>
+          <div className="text-[11px] leading-relaxed">
+            <span className="font-black text-amber-950 block mb-0.5">Aranyszabály:</span>
+            <div className="text-amber-900 font-semibold whitespace-pre-line">
+              {topic.ruleSummary}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -72,26 +74,24 @@ export const TopicCard: React.FC<TopicCardProps> = ({ topic, profile, onSelectTo
       <div>
         <div className="space-y-1.5 mb-4">
           <div className="flex justify-between text-[11px] font-bold text-slate-600">
-            <span>Teljesítés:</span>
-            <span>
-              {completedCount} / {totalInTopic} feladat
+            <span>Gyakorlási menet:</span>
+            <span className="text-orange-600 font-extrabold">
+              10 feladat / menet
             </span>
           </div>
-          <div className="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-            <div
-              className={`h-full bg-linear-to-r ${topic.color} transition-all duration-500 rounded-full`}
-              style={{
-                width: `${totalInTopic > 0 ? (completedCount / totalInTopic) * 100 : 0}%`,
-              }}
-            />
+          <div className="flex justify-between items-center text-[11px] text-slate-400 font-medium pt-0.5">
+            <span>Feladatbank:</span>
+            <span className="bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-bold text-[10px]">
+              {completedCount > 0 ? `${completedCount} kipróbálva / ` : ''}25 változatos feladatból
+            </span>
           </div>
         </div>
 
         <button
           onClick={() => onSelectTopic(topic.id)}
-          className="w-full py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-md shadow-orange-200 transition-all group-hover:scale-101"
+          className="w-full py-2.5 px-4 rounded-xl bg-orange-500 hover:bg-orange-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs hover:shadow-md shadow-orange-200 transition-all group-hover:scale-101 cursor-pointer"
         >
-          <span>Gyakorlás indítása</span>
+          <span>Gyakorlás indítása (10 feladat)</span>
           <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
         </button>
       </div>
