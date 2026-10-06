@@ -58,11 +58,11 @@ export function generateStudentDiagnostic(profile: StudentProfile): Comprehensiv
       case 'vowels':
         if (pct >= 80) {
           strengths.push('Biztosan felismered a rövid és hosszú magánhangzópárokat.');
-          strengths.push('Tudod, hogy a szó végén az ó hosszú (kivétel: no, nono), és figyelsz a szóvégi ő, ú, ű helyesírására.');
+          strengths.push('Biztosan felismered a szóvégi magánhangzókat, és megjegyzed a rövid u, ü végű szavakat.');
         } else if (count > 0) {
           weaknesses.push('A szóvégi magánhangzók (ó, ő, ú, ű) még gyakorlást igényelnek.');
-          tips.push('A szó végén az ó hosszú! Kivétel: no, nono.');
-          tips.push('A szóvégi ő, ú, ű írására külön figyelünk: megjegyezzük a rövid u és ü végű szavakat (pl. kapu, falu, daru, hamu, apu, anyu, eskü, menü).');
+          tips.push('Figyeld meg a szavak végét: a legtöbb esetben hosszú ó-t és ő-t írunk (pl. hajó, erdő, cipő).');
+          tips.push('Megjegyezzük a rövid u és ü végű szavakat: kapu, falu, daru, hamu, apu, anyu, eskü, menü.');
         }
         break;
 
@@ -72,7 +72,7 @@ export function generateStudentDiagnostic(profile: StudentProfile): Comprehensiv
           strengths.push('Hibátlan a kétjegyű mássalhangzók kettőzése (öccs, meggy, gally).');
         } else if (count > 0) {
           weaknesses.push('A kétjegyű mássalhangzók kettőzésének szabályát érdemes átismételni.');
-          tips.push('Hosszú kétjegyűnél csak az első betűt duplázzuk meg: öccs (nem öcscs), fütty (nem fütyty)!');
+          tips.push('A hosszú kétjegyű mássalhangzó írásakor csak az első betűt kettőzzük meg: öccs (nem öcscs), fütty (nem fütyty)!');
         }
         break;
 

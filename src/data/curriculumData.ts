@@ -35,7 +35,7 @@ export const TOPICS: TopicMeta[] = [
     badgeBg: 'bg-amber-100 text-amber-800 border-amber-300',
     iconName: 'Sparkles',
     textbookRef: 'Tankönyv 14–27. oldal',
-    ruleSummary: 'A szó végén az ó hosszú. Kivétel: no, nono.\nA szóvégi ő, ú, ű írására külön figyelünk. Megjegyezzük a rövid u és ü végű szavakat, például: kapu, falu, daru, hamu, apu, anyu, eskü, menü.',
+    ruleSummary: 'A szavak végén leggyakrabban hosszú ó-t és ő-t írunk (hajó, cipő, erdő).\nMegjegyezzük a rövid u és ü végű szavakat: kapu, falu, daru, hamu, apu, anyu, eskü, menü.',
   },
   {
     id: 'consonants',
@@ -45,7 +45,7 @@ export const TOPICS: TopicMeta[] = [
     badgeBg: 'bg-blue-100 text-blue-800 border-blue-300',
     iconName: 'Layers',
     textbookRef: 'Tankönyv 28–39. oldal',
-    ruleSummary: 'Kétjegyű mássalhangzók: cs, dz, gy, ly, ny, sz, ty, zs. Háromjegyű: dzs. Kétjegyűek kettőzésekor az első betűt duplázzuk: öccs, fütty, meggy, gally!',
+    ruleSummary: 'Kétjegyű mássalhangzók: cs, dz, gy, ly, ny, sz, ty, zs. Háromjegyű: dzs.\nA hosszú kétjegyű mássalhangzó írásakor csak az első betűt kettőzzük meg: öccs, fütty, meggy, gally!',
   },
   {
     id: 'j-ly',
